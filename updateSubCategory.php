@@ -23,7 +23,7 @@ if ($id == '' || $name == '' || $mainCatId == '') {
 
 $sql = "UPDATE tbl_subcategory 
         SET name='$name',
-            Description='$description',
+            description='$description',
             maincat_id='$mainCatId'
         WHERE id='$id'"; 
 

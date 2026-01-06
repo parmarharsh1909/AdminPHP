@@ -18,7 +18,7 @@ if (isset($_FILES['image']['name']) && $_FILES['image']['name'] != '') {
     $exe = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
 
     $filename = time() . random_int(1000, 9999) . '.' . $exe;
-    move_uploaded_file($_FILES['image']['tmp_name'], './Uploads/Mens/' . $filename);
+    move_uploaded_file($_FILES['image']['tmp_name'], './Uploads/Womens/' . $filename);
 } else {
     $sql = "SELECT image from tbl_products where id='$id'";
     $result = mysqli_query($conn, $sql);
