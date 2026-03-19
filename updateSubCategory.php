@@ -11,7 +11,7 @@ $response = array();
 $id          = $_POST['id'] ?? '';
 $name        = $_POST['name'] ?? '';
 $description = $_POST['description'] ?? '';
-$mainCatId   = $_POST['maincat_id'] ?? '';
+$mainCatId   = $_POST['maincat_id'] ?? '';  
 
 if ($id == '' || $name == '' || $mainCatId == '') {
     echo json_encode([

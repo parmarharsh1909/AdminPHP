@@ -11,6 +11,11 @@ $sub_catid       = $_POST["sub_catid"];
 $description        = $_POST["description"];
 $price        = $_POST["price"];
 $purity        = $_POST["purity"];
+$offer_id        = $_POST["offer_id"];
+
+if ($offer_id === "") {
+    $offer_id = "NULL";
+}   
 
 if (isset($_FILES['image']['name']) && $_FILES['image']['name'] != '') {
 
@@ -26,7 +31,7 @@ if (isset($_FILES['image']['name']) && $_FILES['image']['name'] != '') {
     $filename = $row['image'];
 }
 $sql = "update tbl_products set
-    product_name = '$product_name',sub_catid='$sub_catid',description='$description',price='$price',purity='$purity',image='$filename'
+    product_name = '$product_name',sub_catid='$sub_catid',description='$description',price='$price',purity='$purity',offer_id=$offer_id,image='$filename'
       where id = '$id'";
 $result = mysqli_query($conn, $sql);
 if ($result) {
