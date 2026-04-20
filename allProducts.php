@@ -22,7 +22,20 @@ if ($user_id == 0) {
 $response['status'] = true;
 
 $menResult = mysqli_query($conn, "
-  SELECT p.id, p.product_name, p.description, p.price, p.purity, p.image, s.name AS subcategory_name, m.maincatname AS maincategory_name, tbl_offers.promocode, tbl_offers.offerdescription FROM tbl_products p JOIN tbl_subcategory s ON p.sub_catid = s.id JOIN tbl_maincategory m ON s.maincat_id = m.id JOIN tbl_offers ON P.offer_id=tbl_offers.offer_id WHERE m.maincatname = 'Men Jewellery'
+  SELECT p.id, p.product_name, p.description, p.price, p.purity, p.image,
+  IFNULL(AVG(r.rating), 0) AS average_rating,
+  COUNT(r.id) AS total_reviews,
+  s.name AS subcategory_name,
+  m.maincatname AS maincategory_name,
+  tbl_offers.promocode,
+  tbl_offers.offerdescription
+  FROM tbl_products p
+  JOIN tbl_subcategory s ON p.sub_catid = s.id
+  JOIN tbl_maincategory m ON s.maincat_id = m.id
+  JOIN tbl_offers ON p.offer_id = tbl_offers.offer_id
+  LEFT JOIN tbl_review r ON p.id = r.product_id
+  WHERE m.maincatname = 'Men Jewellery'
+  GROUP BY p.id
 ");
 
 $response['men'] = [];
@@ -49,7 +62,20 @@ while ($row = mysqli_fetch_assoc($menResult)) {
 }
 
 $womenResult = mysqli_query($conn, "
-    SELECT p.id, p.product_name, p.description, p.price, p.purity, p.image, s.name AS subcategory_name, m.maincatname AS maincategory_name, tbl_offers.promocode, tbl_offers.offerdescription FROM tbl_products p JOIN tbl_subcategory s ON p.sub_catid = s.id JOIN tbl_maincategory m ON s.maincat_id = m.id JOIN tbl_offers ON P.offer_id=tbl_offers.offer_id WHERE m.maincatname = 'Women Jewellery'
+  SELECT p.id, p.product_name, p.description, p.price, p.purity, p.image,
+  IFNULL(AVG(r.rating), 0) AS average_rating,
+  COUNT(r.id) AS total_reviews,
+  s.name AS subcategory_name,
+  m.maincatname AS maincategory_name,
+  tbl_offers.promocode,
+  tbl_offers.offerdescription
+  FROM tbl_products p
+  JOIN tbl_subcategory s ON p.sub_catid = s.id
+  JOIN tbl_maincategory m ON s.maincat_id = m.id
+  JOIN tbl_offers ON p.offer_id = tbl_offers.offer_id
+  LEFT JOIN tbl_review r ON p.id = r.product_id
+  WHERE m.maincatname = 'Women Jewellery'
+  GROUP BY p.id
 ");
 
 $response['women'] = [];

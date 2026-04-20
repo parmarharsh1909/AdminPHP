@@ -30,7 +30,7 @@ if (isset($_POST['user_id']) && !empty($_POST['user_id'])) {
 } else {
 
     // Fetch all users
-    $sql = "SELECT id, name, email, phone, address FROM tbl_signup";
+    $sql = "SELECT id, name, email, phone, address ,password FROM tbl_signup";
     $result = mysqli_query($conn, $sql);
 
     $response['status'] = true;

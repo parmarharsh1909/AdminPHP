@@ -13,7 +13,6 @@ $email_value = $_POST["email"];
 
 $password_value = $_POST["password"];
 
-
 $phone_value = $_POST["phone"];
 
 $address_value = $_POST["address"];
