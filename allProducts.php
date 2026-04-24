@@ -32,7 +32,7 @@ $menResult = mysqli_query($conn, "
   FROM tbl_products p
   JOIN tbl_subcategory s ON p.sub_catid = s.id
   JOIN tbl_maincategory m ON s.maincat_id = m.id
-  JOIN tbl_offers ON p.offer_id = tbl_offers.offer_id
+  LEFT JOIN tbl_offers ON p.offer_id = tbl_offers.offer_id
   LEFT JOIN tbl_review r ON p.id = r.product_id
   WHERE m.maincatname = 'Men Jewellery'
   GROUP BY p.id
@@ -72,7 +72,7 @@ $womenResult = mysqli_query($conn, "
   FROM tbl_products p
   JOIN tbl_subcategory s ON p.sub_catid = s.id
   JOIN tbl_maincategory m ON s.maincat_id = m.id
-  JOIN tbl_offers ON p.offer_id = tbl_offers.offer_id
+  LEFT JOIN tbl_offers ON p.offer_id = tbl_offers.offer_id
   LEFT JOIN tbl_review r ON p.id = r.product_id
   WHERE m.maincatname = 'Women Jewellery'
   GROUP BY p.id

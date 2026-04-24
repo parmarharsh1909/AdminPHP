@@ -31,23 +31,70 @@ ORDER BY o.id DESC";
 
 $result = mysqli_query($conn, $sql);
 
-$data = [];
+$orders = [];
 
 if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
 
+        $order_id = $row['order_id'];
+
         // image path
-        $row['product_image'] = ($row['sub_catid'] <= 3)
+        $product_image = ($row['sub_catid'] <= 3)
             ? "Uploads/Mens/" . $row['image']
             : "Uploads/Womens/" . $row['image'];
 
-        // safety fallback
-        $row['discount_amount'] = $row['discount_amount'] ?? 0;
-        $row['final_price']     = $row['final_price'] ?? $row['total_price'];
-        $row['you_saved']       = $row['discount_amount'];
+        // 🔥 safe values
+        $discount_amount = $row['discount_amount'] ?? 0;
+        $final_price     = $row['final_price'] ?? $row['total_price'];
 
-        $data[] = $row;
+        // 🔥 GROUP BY order_id
+        if (!isset($orders[$order_id])) {
+            $orders[$order_id] = [
+                "order_id" => $row['order_id'],
+                "user_id" => $row['user_id'],
+                "order_status" => $row['order_status'],
+                "payment_status" => $row['payment_status'],
+                "payment_method" => $row['payment_method'],
+                "payment_id" => $row['payment_id'],
+                "order_date" => $row['order_date'],
+                "shipping_address" => $row['shipping_address'],
+
+                // 🔥 ORDER LEVEL (will calculate properly below)
+                "final_price" => 0,
+                "total_price" => 0,
+                "discount_amount" => 0,
+
+                "promocode" => $row['promocode'],
+                "customer_name" => $row['customer_name'],
+                "customer_email" => $row['customer_email'],
+                "customer_phone" => $row['customer_phone'],
+                "customer_address" => $row['customer_address'],
+                "products" => []
+            ];
+        }
+
+        // 🔥 ADD PRODUCT WITH DISCOUNT
+        $orders[$order_id]["products"][] = [
+            "product_id" => $row['product_id'],
+            "product_name" => $row['product_name'],
+            "product_image" => $product_image,
+            "quantity" => $row['quantity'],
+            "price" => $row['price'],
+
+            // 🔥 IMPORTANT FIELDS
+            "item_total" => $row['total_price'],
+            "item_discount" => $discount_amount,
+            "item_final_price" => $final_price
+        ];
+
+        // 🔥 CALCULATE ORDER TOTALS (SAFE)
+        $orders[$order_id]["total_price"] += $row['total_price'];
+        $orders[$order_id]["discount_amount"] += $discount_amount;
+        $orders[$order_id]["final_price"] += $final_price;
     }
+
+    // reset indexing
+    $data = array_values($orders);
 
     echo json_encode([
         "status" => true,

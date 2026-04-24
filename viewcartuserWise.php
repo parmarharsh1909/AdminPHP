@@ -18,7 +18,29 @@ if ($user_id == 0) {
 }
 
 $sql = "
-   SELECT c.id AS cart_id, p.id AS product_id, p.product_name, p.description, p.price, p.purity, p.image, c.quantity, m.maincatname, tbl_offers.promocode, tbl_offers.offerdescription, tbl_offers.discount_value FROM tbl_cart c JOIN tbl_products p ON c.product_id = p.id JOIN tbl_subcategory s ON p.sub_catid = s.id JOIN tbl_maincategory m ON s.maincat_id = m.id Join tbl_offers on p.offer_id=tbl_offers.offer_id WHERE c.user_id = $user_id;
+   SELECT 
+  c.id AS cart_id,
+  p.id AS product_id,
+  p.product_name,
+  p.description,
+  p.price,
+  p.purity,
+  p.image,
+  c.quantity,
+  m.maincatname,
+  tbl_offers.promocode,
+  tbl_offers.offerdescription,
+  tbl_offers.discount_value
+
+FROM tbl_cart c
+
+JOIN tbl_products p ON c.product_id = p.id
+JOIN tbl_subcategory s ON p.sub_catid = s.id
+JOIN tbl_maincategory m ON s.maincat_id = m.id
+
+LEFT JOIN tbl_offers ON p.offer_id = tbl_offers.offer_id
+
+WHERE c.user_id = $user_id;
 ";
 
 

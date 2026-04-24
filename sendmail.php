@@ -156,7 +156,92 @@ try {
       </div>
     </div>";
   }
+/* =========================
+      4️⃣ INQUIRY MAIL
+   ========================= */
+elseif ($type == "inquiry") {
 
+  $name    = $_POST['name'] ?? '';
+  $mobile  = $_POST['mobile'] ?? '';
+  $product = $_POST['product_name'] ?? '';
+  $msg     = $_POST['message'] ?? '';
+
+  // ✅ ADMIN MAIL
+  $mail->Subject = "New Inquiry - HP Jewelles";
+
+  $mail->Body = "
+  <div style='font-family: Arial, sans-serif; background:#f9f6f2; padding:20px;'>
+    <div style='max-width:600px; margin:auto; background:#ffffff; border-radius:10px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.1);'>
+      
+      <div style='background:#6d4e19; color:#fff; padding:20px; text-align:center;'>
+        <h2 style='margin:0;'>New Inquiry Received 💬</h2>
+      </div>
+      
+      <div style='padding:20px; color:#333;'>
+        <p><b>Name:</b> $name</p>
+        <p><b>Email:</b> $email</p>
+        <p><b>Mobile:</b> $mobile</p>
+        <p><b>Product:</b> $product</p>
+        <p><b>Message:</b><br/> $msg</p>
+
+        <p style='margin-top:30px;'>
+          — HP Jewelles System
+        </p>
+      </div>
+
+      <div style='background:#f1f1f1; text-align:center; padding:10px; font-size:12px; color:#777;'>
+        © " . date("Y") . " HP Jewelles
+      </div>
+
+    </div>
+  </div>";
+
+  // send to ADMIN
+  $mail->clearAddresses();
+  $mail->addAddress('d23amtics066@gmail.com');
+  $mail->send();
+
+
+  // ✅ AUTO REPLY TO USER
+  $mail->clearAddresses();
+  $mail->addAddress($email);
+
+  $mail->Subject = "We received your inquiry ✨";
+
+  $mail->Body = "
+  <div style='font-family: Arial, sans-serif; background:#f9f6f2; padding:20px;'>
+    <div style='max-width:600px; margin:auto; background:#ffffff; border-radius:10px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.1);'>
+      
+      <div style='background:#b08d57; color:#fff; padding:20px; text-align:center;'>
+        <h2 style='margin:0;'>Thank You 💎</h2>
+      </div>
+      
+      <div style='padding:20px; color:#333;'>
+        <p>Hello $name,</p>
+        
+        <p>
+          We have received your inquiry regarding <b>$product</b>.
+        </p>
+
+        <p>
+          Our team will contact you shortly.
+        </p>
+
+        <p style='margin-top:30px;'>
+          Regards,<br/>
+          <b>HP Jewelles Team</b>
+        </p>
+      </div>
+
+      <div style='background:#f1f1f1; text-align:center; padding:10px; font-size:12px; color:#777;'>
+        © " . date("Y") . " HP Jewelles
+      </div>
+
+    </div>
+  </div>";
+
+  $mail->send();
+}
   else {
     throw new Exception("Invalid mail type");
   }
